@@ -93,14 +93,14 @@ if [ ! -z `which ${MONO_BIN}` ]; then
   export PKG_CONFIG_PATH=$MONO_PREFIX/lib/pkgconfig:$GNOME_PREFIX/lib/pkgconfig
   PATH=$MONO_PREFIX/bin:$PATH
 
-  MONO_VERSION=`gmcs --version | awk 'END { print $NF }' | awk 'END { print substr($NF,0, length($NF)-2) }'`
+  MONO_VERSION=`mono --version | head -1 | awk 'END { print $5 }'`
 
   version[app_count]=${MONO_VERSION}
   app[app_count]='mono'
   let app_count=app_count+1
 else
   if [[ `which mono` ]] && [[ `which mono` != /usr/bin/* ]]; then
-    MONO_VERSION=`gmcs --version | awk 'END { print $NF }' | awk 'END { print substr($NF,0, length($NF)-2) }'`
+    MONO_VERSION=`mono --version | head -1 | awk 'END { print $5 }'`
 
     version[app_count]=$MONO_VERSION
     app[app_count]='mono'
