@@ -81,6 +81,7 @@ hput 'ironruby' 'red'
 hput 'node'     'green'
 hput 'mono'     'yellow'
 hput 'git'      'blue'
+hput 'gcc'      'magenta'
 
 
 MONO_BIN=$PREFIX/bin/mono
@@ -169,7 +170,7 @@ fi
 
 
 GIT_BIN=$PREFIX/bin/git
-if [ ! -z `which $GIT_BIN` ];then
+if [ ! -z `which $GIT_BIN` ]; then
   PATH=$PREFIX/bin:$PATH
   
   version[app_count]=`git --version | awk 'END { print $3 }'`
@@ -184,13 +185,29 @@ else
   fi
 fi
 
+GCC_BIN=$PREFIX/bin/gcc
+if [ ! -z `which $GCC_BIN` ]; then
+  PATH=$PREFIX/bin:$PATH
+
+  version[app_count]=`gcc --version | head -1 | awk 'END { print $3 }'`
+  app[app_count]='gcc'
+  app_count=$(( $app_count + 1))
+else
+  if [ `which gcc` ] && [[ `which gcc` != /usr/bin/* ]]; then
+    version[app_count]=`gcc --version | head -1 | awk 'END { print $3 }'`
+    app[app_count]='gcc'
+    app_count=$(( $app_count + 1))
+  fi
+fi
+
 
 time="${rgb_blue}[${rgb_usr}\`date +%H\`${RGB_BLUE}:${rgb_usr}\`date +%M\`${rgb_blue}]"
 
-hput 'yellow' $rgb_yellow
-hput 'red'    $rgb_firebrick
-hput 'green'  $rgb_green
-hput 'blue'   $rgb_blue
+hput 'yellow'  $rgb_yellow
+hput 'red'     $rgb_firebrick
+hput 'green'   $rgb_green
+hput 'blue'    $rgb_blue
+hput 'magenta' $rgb_magenta
 
 PRE="${rgb_usr}\u${rgb_white}@${rgb_purple}\h${rgb_white}:"
 
