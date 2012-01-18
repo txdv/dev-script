@@ -172,7 +172,7 @@ fi
 GIT_BIN=$PREFIX/bin/git
 if [ ! -z `which $GIT_BIN` ]; then
   PATH=$PREFIX/bin:$PATH
-  
+
   version[app_count]=`git --version | awk 'END { print $3 }'`
   app[app_count]='git'
   let app_count=app_count+1
