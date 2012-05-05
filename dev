@@ -89,9 +89,9 @@ if [ ! -z `which ${MONO_BIN}` ]; then
   MONO_PREFIX=$PREFIX
   export DYLD_LIBRARY_PATH=$MONO_PREFIX/lib:$DYLD_LIBRARY_PATH
   export LD_LIBRARY_PATH=$MONO_PREFIX/lib:$LD_LIBRARY_PATH
-  export C_INCLUDE_PATH=$MONO_PREFIX/include:$GNOME_PREFIX/include
-  export ACLOCAL_PATH=$MONO_PREFIX/share/aclocal
-  export PKG_CONFIG_PATH=$MONO_PREFIX/lib/pkgconfig:$GNOME_PREFIX/lib/pkgconfig
+  export C_INCLUDE_PATH=$MONO_PREFIX/include:$C_INCLUDE_PATH
+  export ACLOCAL_PATH=$MONO_PREFIX/share/aclocal:$ACLOCAL_PATH
+  export PKG_CONFIG_PATH=$MONO_PREFIX/lib/pkgconfig:$PKG_CONFIG_PATH=
   PATH=$MONO_PREFIX/bin:$PATH
 
   MONO_VERSION=`mono --version | head -1 | awk 'END { print $5 }'`
