@@ -1,0 +1,23 @@
+#!/bin/bash
+
+function add_export {
+  if [ -d $1/lib ]; then
+    export DYLD_LIBRARY_PATH=$1/lib:$DYLD_LIBRARY_PATH
+    export LD_LIBRARY_PATH=$1/lib:$LD_LIBRARY_PATH
+  fi;
+
+  if [ -d $1/include ]; then
+    export C_INCLUDE_PATH=$1/include:$C_INCLUDE_PATH
+  fi;
+  if [ -d $1/share/aclocal ]; then
+    export ACLOCAL_PATH=$1/share/aclocal:$ACLOCAL_PATH
+  fi;
+  if [ -d $1/lib/pkgconfig ]; then
+    PKG_CONFIG_PATH=$1/lib/pkgconfig:$PKG_CONFIG_PATH
+  fi;
+  if [ -d $1/bin ]; then
+    export PATH=$1/bin:$PATH
+  fi;
+}
+
+add_export $@

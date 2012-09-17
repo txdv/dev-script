@@ -83,16 +83,11 @@ hput 'mono'     'yellow'
 hput 'git'      'blue'
 hput 'gcc'      'magenta'
 
+source add_export
 
 MONO_BIN=$PREFIX/bin/mono
 if [ ! -z `which ${MONO_BIN}` ]; then
-  MONO_PREFIX=$PREFIX
-  export DYLD_LIBRARY_PATH=$MONO_PREFIX/lib:$DYLD_LIBRARY_PATH
-  export LD_LIBRARY_PATH=$MONO_PREFIX/lib:$LD_LIBRARY_PATH
-  export C_INCLUDE_PATH=$MONO_PREFIX/include:$C_INCLUDE_PATH
-  export ACLOCAL_PATH=$MONO_PREFIX/share/aclocal:$ACLOCAL_PATH
-  export PKG_CONFIG_PATH=$MONO_PREFIX/lib/pkgconfig:$PKG_CONFIG_PATH
-  export PATH=$MONO_PREFIX/bin:$PATH
+  add_export $PREFIX
 
   MONO_VERSION=`mono --version | head -1 | awk 'END { print $5 }'`
 
@@ -112,8 +107,7 @@ fi
 
 NODE_BIN=$PREFIX/bin/node
 if [ ! -z `which ${NODE_BIN}` ]; then
-
-  PATH=$PREFIX/bin:$PATH
+  add_export $PREFIX
 
   NODE_VERSION=`${NODE_BIN} --version`
 
@@ -134,7 +128,7 @@ fi
 
 IRONRUBY_BIN=$PREFIX/bin/ir
 if [ ! -z `which ${IRONRUBY_BIN}` ]; then
-  PATH=$PREFIX/bin:$PATH
+  add_export $PREFIX
 
   IRONRUBY_VERSION=`ir --version | awk 'END { print $2 }'`
 
@@ -154,7 +148,7 @@ fi
 
 RUBY_BIN=$PREFIX/bin/ruby
 if [ ! -z `which $RUBY_BIN` ]; then
-  PATH=$PREFIX/bin:$PATH
+  add_export $PREFIX
 
   version[app_count]=`ruby --version | awk 'END { print $2 }'`
   app[app_count]='ruby'
@@ -171,7 +165,7 @@ fi
 
 GIT_BIN=$PREFIX/bin/git
 if [ ! -z `which $GIT_BIN` ]; then
-  PATH=$PREFIX/bin:$PATH
+  add_export $PREFIX
 
   version[app_count]=`git --version | awk 'END { print $3 }'`
   app[app_count]='git'
@@ -187,7 +181,7 @@ fi
 
 GCC_BIN=$PREFIX/bin/gcc
 if [ ! -z `which $GCC_BIN` ]; then
-  PATH=$PREFIX/bin:$PATH
+  add_export $PREFIX
 
   version[app_count]=`gcc --version | head -1 | awk 'END { print $3 }'`
   app[app_count]='gcc'
@@ -202,9 +196,7 @@ fi
 
 VALA_BIN=$PREFIX/bin/valac
 if [ ! -z `which $VALA_BIN` ]; then
-  PATH=$PREFIX/bin:$PATH
-  export LD_LIBRARY_PATH=$PREFIX/lib:$LD_LIBRARY_PATH
-  export PKG_CONFIG_PATH=$PREFIX/lib/pkgconfig:$PKG_CONFIG_PATH
+  add_export $PREFIX
 
   version[app_count]=`valac --version | awk 'END { print $2 }'`
   app[app_count]='vala'
