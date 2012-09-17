@@ -94,7 +94,7 @@ if [[ `which mono` ]] && [[ `which mono` != /usr/bin/* ]]; then
 fi
 
 
-if [ `which node` ] && [[ `which node` != /usr/bin/* ]]; then
+if [[ `which node` ]] && [[ `which node` != /usr/bin/* ]]; then
   NODE_VERSION=`node --version`
 
   version[app_count]=$NODE_VERSION
@@ -103,7 +103,7 @@ if [ `which node` ] && [[ `which node` != /usr/bin/* ]]; then
 fi
 
 
-if [ `which ir` ] && [[ `which ir` != /usr/bin/* ]]; then
+if [[ `which ir` ]] && [[ `which ir` != /usr/bin/* ]]; then
   IRONRUBY_VERSION=`ir --version | awk 'END { print $2 }'`
 
   version[app_count]=$IRONRUBY_VERSION
@@ -112,7 +112,7 @@ if [ `which ir` ] && [[ `which ir` != /usr/bin/* ]]; then
 fi
 
 
-if [ `which ruby` ] && [[ `which ruby` != /usr/bin/* ]]; then
+if [[ `which ruby` ]] && [[ `which ruby` != /usr/bin/* ]]; then
 
   version[app_count]=`ruby --version | awk 'END { print $2 }'`
   app[app_count]='ruby'
@@ -120,7 +120,7 @@ if [ `which ruby` ] && [[ `which ruby` != /usr/bin/* ]]; then
 fi
 
 
-if [ `which git` ] && [[ `which git` != /usr/bin/* ]]; then
+if [[ `which git` ]] && [[ `which git` != /usr/bin/* ]]; then
 
   version[app_count]=`git --version | awk 'END { print $3 }'`
   app[app_count]='git'
@@ -128,13 +128,13 @@ if [ `which git` ] && [[ `which git` != /usr/bin/* ]]; then
 fi
 
 
-if [ `which gcc` ] && [[ `which gcc` != /usr/bin/* ]]; then
+if [[ `which gcc` ]] && [[ `which gcc` != /usr/bin/* ]]; then
   version[app_count]=`gcc --version | head -1 | awk 'END { print $3 }'`
   app[app_count]='gcc'
   app_count=$(( $app_count + 1))
 fi
 
-if [ `which valac` ] && [[ `which valac` != /usr/bin/* ]]; then
+if [[ `which valac` ]] && [[ `which valac` != /usr/bin/* ]]; then
   version[app_count]=`valac --version | awk 'END { print $2 }'`
   app[app_count]='vala'
   app_count=$(( $app_count + 1))
