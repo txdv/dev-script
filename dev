@@ -85,60 +85,54 @@ hput 'gcc'      'magenta'
 
 # application code
 
-if [[ `which mono` ]] && [[ `which mono` != /usr/bin/* ]]; then
-  MONO_VERSION=`mono --version | head -1 | awk 'END { print $5 }'`
+function add_runtime {
+  if [[ `which $1` ]] && [[ `which $1` != /usr/bin/* ]]; then
+    app[app_count]=$2
+    version[app_count]=$($3)
+    let app_count=app_count+1
+  fi
+}
 
-  version[app_count]=$MONO_VERSION
-  app[app_count]='mono'
-  let app_count=app_count+1
-fi
-
-
-if [[ `which node` ]] && [[ `which node` != /usr/bin/* ]]; then
-  NODE_VERSION=`node --version`
-
-  version[app_count]=$NODE_VERSION
-  app[app_count]='node'
-  let app_count=app_count+1
-fi
+function mono_version {
+  echo $(mono --version | head -1 | awk 'END { print $5 }')
+}
+add_runtime 'mono' 'mono' 'mono_version'
 
 
-if [[ `which ir` ]] && [[ `which ir` != /usr/bin/* ]]; then
-  IRONRUBY_VERSION=`ir --version | awk 'END { print $2 }'`
-
-  version[app_count]=$IRONRUBY_VERSION
-  app[app_count]='ironruby'
-  let app_count=app_count+1
-fi
+function node_version {
+  echo $(node --version)
+}
+add_runtime 'node' 'node' 'node_version'
 
 
-if [[ `which ruby` ]] && [[ `which ruby` != /usr/bin/* ]]; then
-
-  version[app_count]=`ruby --version | awk 'END { print $2 }'`
-  app[app_count]='ruby'
-  let app_count=app_count+1
-fi
+function ironruby_version {
+  echo $(ir --version | awk 'END { print $2 }')
+}
+add_runtime 'ir' 'ironruby' 'ironruby_version'
 
 
-if [[ `which git` ]] && [[ `which git` != /usr/bin/* ]]; then
-
-  version[app_count]=`git --version | awk 'END { print $3 }'`
-  app[app_count]='git'
-  let app_count=app_count+1
-fi
+function ruby_version {
+  echo $(ruby --version | awk 'END { print $2 }')
+}
+add_runtime 'ruby' 'ruby' 'ruby_version'
 
 
-if [[ `which gcc` ]] && [[ `which gcc` != /usr/bin/* ]]; then
-  version[app_count]=`gcc --version | head -1 | awk 'END { print $3 }'`
-  app[app_count]='gcc'
-  app_count=$(( $app_count + 1))
-fi
+function git_version {
+  echo $(git --version | awk 'END { print $3 }')
+}
+add_runtime 'git' 'git' 'git_version'
 
-if [[ `which valac` ]] && [[ `which valac` != /usr/bin/* ]]; then
-  version[app_count]=`valac --version | awk 'END { print $2 }'`
-  app[app_count]='vala'
-  app_count=$(( $app_count + 1))
-fi
+
+function gcc_version {
+  echo $(gcc --version | head -1 | awk 'END { print $3 }')
+}
+add_runtime 'gcc' 'gcc' 'git_version'
+
+
+function vala_version {
+  echo $(valac --version | awk 'END { print $2 }')
+}
+add_runtime 'vala' 'vala' 'vala_version'
 
 
 time="${rgb_blue}[${rgb_usr}\`date +%H\`${RGB_BLUE}:${rgb_usr}\`date +%M\`${rgb_blue}]"
