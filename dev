@@ -63,8 +63,6 @@ else
  rgb_usr="${rgb_green}"
 fi
 
-PREFIX=$1
-
 app_count=0
 declare -a version app
 
@@ -76,6 +74,8 @@ hget () {
   eval echo '${hash'"$1"'#hash}'
 }
 
+# colors
+
 hput 'ruby'     'red'
 hput 'ironruby' 'red'
 hput 'node'     'green'
@@ -83,130 +83,61 @@ hput 'mono'     'yellow'
 hput 'git'      'blue'
 hput 'gcc'      'magenta'
 
-source add_export
+# application code
 
-MONO_BIN=$PREFIX/bin/mono
-if [ ! -z `which ${MONO_BIN}` ]; then
-  add_export $PREFIX
-
+if [[ `which mono` ]] && [[ `which mono` != /usr/bin/* ]]; then
   MONO_VERSION=`mono --version | head -1 | awk 'END { print $5 }'`
 
-  version[app_count]=${MONO_VERSION}
+  version[app_count]=$MONO_VERSION
   app[app_count]='mono'
   let app_count=app_count+1
-else
-  if [[ `which mono` ]] && [[ `which mono` != /usr/bin/* ]]; then
-    MONO_VERSION=`mono --version | head -1 | awk 'END { print $5 }'`
-
-    version[app_count]=$MONO_VERSION
-    app[app_count]='mono'
-    let app_count=app_count+1
-  fi
 fi
 
 
-NODE_BIN=$PREFIX/bin/node
-if [ ! -z `which ${NODE_BIN}` ]; then
-  add_export $PREFIX
-
-  NODE_VERSION=`${NODE_BIN} --version`
+if [ `which node` ] && [[ `which node` != /usr/bin/* ]]; then
+  NODE_VERSION=`node --version`
 
   version[app_count]=$NODE_VERSION
   app[app_count]='node'
   let app_count=app_count+1
-
-else
-  if [ `which node` ] && [[ `which node` != /usr/bin/* ]]; then
-    NODE_VERSION=`node --version`
-
-    version[app_count]=$NODE_VERSION
-    app[app_count]='node'
-    let app_count=app_count+1
-  fi
 fi
 
 
-IRONRUBY_BIN=$PREFIX/bin/ir
-if [ ! -z `which ${IRONRUBY_BIN}` ]; then
-  add_export $PREFIX
-
+if [ `which ir` ] && [[ `which ir` != /usr/bin/* ]]; then
   IRONRUBY_VERSION=`ir --version | awk 'END { print $2 }'`
 
   version[app_count]=$IRONRUBY_VERSION
   app[app_count]='ironruby'
   let app_count=app_count+1
-else
-  if [ `which ir` ] && [[ `which ir` != /usr/bin/* ]]; then
-    IRONRUBY_VERSION=`ir --version | awk 'END { print $2 }'`
-
-    version[app_count]=$IRONRUBY_VERSION
-    app[app_count]='ironruby'
-    let app_count=app_count+1
-  fi
 fi
 
 
-RUBY_BIN=$PREFIX/bin/ruby
-if [ ! -z `which $RUBY_BIN` ]; then
-  add_export $PREFIX
+if [ `which ruby` ] && [[ `which ruby` != /usr/bin/* ]]; then
 
   version[app_count]=`ruby --version | awk 'END { print $2 }'`
   app[app_count]='ruby'
   let app_count=app_count+1
-else
-  if [ `which ruby` ] && [[ `which ruby` != /usr/bin/* ]]; then
-
-    version[app_count]=`ruby --version | awk 'END { print $2 }'`
-    app[app_count]='ruby'
-    let app_count=app_count+1
-  fi
 fi
 
 
-GIT_BIN=$PREFIX/bin/git
-if [ ! -z `which $GIT_BIN` ]; then
-  add_export $PREFIX
+if [ `which git` ] && [[ `which git` != /usr/bin/* ]]; then
 
   version[app_count]=`git --version | awk 'END { print $3 }'`
   app[app_count]='git'
   let app_count=app_count+1
-else
-  if [ `which git` ] && [[ `which git` != /usr/bin/* ]]; then
-
-    version[app_count]=`git --version | awk 'END { print $3 }'`
-    app[app_count]='git'
-    let app_count=app_count+1
-  fi
 fi
 
-GCC_BIN=$PREFIX/bin/gcc
-if [ ! -z `which $GCC_BIN` ]; then
-  add_export $PREFIX
 
+if [ `which gcc` ] && [[ `which gcc` != /usr/bin/* ]]; then
   version[app_count]=`gcc --version | head -1 | awk 'END { print $3 }'`
   app[app_count]='gcc'
   app_count=$(( $app_count + 1))
-else
-  if [ `which gcc` ] && [[ `which gcc` != /usr/bin/* ]]; then
-    version[app_count]=`gcc --version | head -1 | awk 'END { print $3 }'`
-    app[app_count]='gcc'
-    app_count=$(( $app_count + 1))
-  fi
 fi
 
-VALA_BIN=$PREFIX/bin/valac
-if [ ! -z `which $VALA_BIN` ]; then
-  add_export $PREFIX
-
+if [ `which valac` ] && [[ `which valac` != /usr/bin/* ]]; then
   version[app_count]=`valac --version | awk 'END { print $2 }'`
   app[app_count]='vala'
   app_count=$(( $app_count + 1))
-else
-  if [ `which valac` ] && [[ `which valac` != /usr/bin/* ]]; then
-    version[app_count]=`valac --version | awk 'END { print $2 }'`
-    app[app_count]='vala'
-    app_count=$(( $app_count + 1))
-  fi
 fi
 
 
