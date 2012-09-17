@@ -200,6 +200,23 @@ else
   fi
 fi
 
+VALA_BIN=$PREFIX/bin/valac
+if [ ! -z `which $VALA_BIN` ]; then
+  PATH=$PREFIX/bin:$PATH
+  export LD_LIBRARY_PATH=$PREFIX/lib:$LD_LIBRARY_PATH
+  export PKG_CONFIG_PATH=$PREFIX/lib/pkgconfig:$PKG_CONFIG_PATH
+
+  version[app_count]=`valac --version | awk 'END { print $2 }'`
+  app[app_count]='vala'
+  app_count=$(( $app_count + 1))
+else
+  if [ `which valac` ] && [[ `which valac` != /usr/bin/* ]]; then
+    version[app_count]=`valac --version | awk 'END { print $2 }'`
+    app[app_count]='vala'
+    app_count=$(( $app_count + 1))
+  fi
+fi
+
 
 time="${rgb_blue}[${rgb_usr}\`date +%H\`${RGB_BLUE}:${rgb_usr}\`date +%M\`${rgb_blue}]"
 
