@@ -95,33 +95,33 @@ color = esc.color
 
 apps = [
   {
-    :name  => 'mono',
-    :exec  => 'mono',
+    :name  => :mono,
+    :exec  => :mono,
     :color => :yellow,
     :version => lambda { return `mono --version`.split(' ')[4] },
   }, {
-    :name  => 'node',
-    :exec  => 'node',
+    :name  => :node,
+    :exec  => :node,
     :color => :lightgreen,
     :version => lambda { return `node --version`.strip[1..-1] }
   }, {
-    :name    => 'ruby',
-    :exec    => 'ruby',
+    :name    => :ruby,
+    :exec    => :ruby,
     :color   => :red,
     :version => lambda { return `ruby --version`.split(' ')[1] }
   }, {
-    :name    => 'git',
-    :exec    => 'git',
+    :name    => :git,
+    :exec    => :git,
     :color   => :blue,
     :version => lambda { return `git --version`.strip.split(' ')[2] }
   }, {
-    :name    => 'vala',
-    :exec    => 'valac',
+    :name    => :vala,
+    :exec    => :valac,
     :color   => :lightpurple,
     :version => lambda { return `valac --version`.strip.split(' ')[1] }
   }, {
-    :name    => 'gcc',
-    :exec    => 'gcc',
+    :name    => :gcc,
+    :exec    => :gcc,
     :color   => :white,
     :version => lambda { return `gcc --version`.strip.split(' ')[2] }
   }
