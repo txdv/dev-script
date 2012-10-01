@@ -1,9 +1,11 @@
 #!/usr/bin/env node
 
-var prototype = require('prototype');
 require('shelljs/global');
-var print = console.log,
-    mu = require('mu2');
+var
+    print = console.log,
+    prototype = require('prototype'),
+    mu        = require('mu2'),
+    Fiber     = require('fibers');
 
 var esc = {
   day     : '\\d',
@@ -78,9 +80,47 @@ var esc = {
   }
 }
 
+String.prototype.startsWith = function (str) {
+  return this.slice(0, str.length) == str;
+};
+
+Array.prototype.contains = function (item) {
+  for (var i = 0; i < this.length; i++) {
+    if (this[i] == item) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function Variables() {
+  var vars = { };
+  return {
+    export: function() {
+      return vars;
+    },
+    exportVariables: function() {
+      for (key in vars) {
+        if (vars[key] !== undefined && vars[key] !== '') {
+          console.log(key + ' ' + vars[key] + "|");
+        }
+      }
+    },
+    set: function(key, value) {
+      vars[key] = value;
+    },
+    add: function(key, value, seperator) {
+      if (seperator === 'undefined') {
+        seperator = ':';
+      }
+      vars[key] = value + ':' + env[key];
+    }
+  };
+}
+
 function strftime(format) { return '\\D{' + format + '}'; }
 
-function render(str, obj) {
+function render(str, obj, callback) {
   var o = { esc: esc, color: esc.color };
   if (obj !== undefined && typeof obj === 'object') {
     for (var attrname in obj) {
@@ -90,7 +130,15 @@ function render(str, obj) {
     }
   }
   var stream = require('mu2').renderText(str, o);
-  require('util').pump(stream, process.stdout);
+  var str = '';
+  stream.on('data', function(buf) {
+    str += buf.toString('utf8');
+  });
+  stream.on('end', function() {
+    //if (typeof callback === 'function') {
+      callback(str);
+    //}
+  });
 }
 
 function get(str) {
@@ -120,21 +168,6 @@ apps = [
 ];
 
 var pre = '{{color.lightgreen}}{{esc.username}}{{color.white}}@{{color.purple}}{{esc.host}}{{color.white}}:';
-
-if (typeof String.prototype.startsWith != 'function') {
-  String.prototype.startsWith = function (str) {
-    return this.slice(0, str.length) == str;
-  };
-}
-
-Array.prototype.contains = function (item) {
-  for (var i = 0; i < this.length; i++) {
-    if (this[i] == item) {
-      return true;
-    }
-  }
-  return false;
-}
 
 function escp(str, chars, color) {
   color = '{{color.' + color + '}}';
@@ -184,4 +217,12 @@ function appstring() {
   return res;
 }
 
-render(pre + appstring() + ' {{color.blue}}{{esc.pwd}} {{color.lightgreen}}${{color.nc}} ');
+var str = pre + appstring() + ' {{color.blue}}{{esc.pwd}} {{color.lightgreen}}${{color.nc}} ';
+var code = { esc: esc, color: esc.color };
+
+var vars = new Variables();
+render(str, code, function (str) {
+  vars.set('PS1', str);
+  vars.exportVariables();
+});
+
