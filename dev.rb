@@ -119,6 +119,11 @@ apps = [
     :exec    => 'valac',
     :color   => :lightpurple,
     :version => lambda { return `valac --version`.strip.split(' ')[1] }
+  }, {
+    :name    => 'gcc',
+    :exec    => 'gcc',
+    :color   => :white,
+    :version => lambda { return `gcc --version`.strip.split(' ')[2] }
   }
 ]
 
