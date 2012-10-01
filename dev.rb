@@ -111,6 +111,12 @@ apps = [
     :exec    => 'ruby',
     :color   => :red,
     :version => lambda { return `ruby --version`.split(' ')[1] }
+  },
+  {
+    :name    => 'git',
+    :exec    => 'git',
+    :color   => :blue,
+    :version => lambda { return `git --version`.trim.split(' ')[2] }
   }
 ]
 
@@ -124,8 +130,8 @@ pre = "#{color.lightgreen}#{esc.username}#{color.white}@#{color.purple}#{esc.hos
 str = apps.collect do |app|
   name = app[:name]
   which = `which #{app[:exec]}`
-  return if which.length == 0
-  return if which.starts_with?("/usr/bin/")
+  next if which.length == 0
+  next if which.starts_with?("/usr/bin/")
   version = app[:version].call
   colorize(color.white, color[app[:color]], "\.", "#{name}-#{version}")
 end.join("#{color.white}:")
