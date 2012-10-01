@@ -134,7 +134,7 @@ str = apps.collect do |app|
   next if which.starts_with?("/usr/bin/")
   version = app[:version].call
   colorize(color.white, color[app[:color]], "\.", "#{name}-#{version}")
-end.join("#{color.white}:")
+end.reject { |x| x == nil }.join("#{color.white}:")
 
 res = pre + str + "#{color.white}: #{color.blue}#{esc.pwd} #{color.lightgreen}$#{color.nc} "
 
