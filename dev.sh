@@ -2,7 +2,7 @@
 
 old_IFS=$IFS
 IFS=$'\n'
-lines=($(node $@))
+lines=($($@))
 IFS=$old_IFS
 
 len=${#lines[@]}
