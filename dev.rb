@@ -124,6 +124,16 @@ apps = [
     :exec    => :gcc,
     :color   => :white,
     :version => lambda { return `gcc --version`.strip.split(' ')[2] }
+  }, {
+    :name   => :clang,
+    :exec   => :clang,
+    :color  => :lightgray,
+    :version => lambda { return `clang --version`.split(' ')[2].strip }
+  }, {
+    :name   => :ir,
+    :exec   => :ir,
+    :color  => :lightred,
+    :version => lambda { return `ir --version`.split(' ')[1].strip }
   }
 ]
 
