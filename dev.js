@@ -1,11 +1,8 @@
 #!/usr/bin/env node
 
-require('shelljs/global');
-var
+var shelljs = require('shelljs'),
     print = console.log,
-    prototype = require('prototype'),
-    mu        = require('mu2'),
-    Fiber     = require('fibers');
+    mu    = require('mu2');
 
 var esc = {
   day     : '\\d',
@@ -143,7 +140,7 @@ function render(str, obj, callback) {
 
 function get(str) {
   function trim(s) { s = s.replace(/(^\s*)|(\s*$)/gi,""); s = s.replace(/[ ]{2,}/gi," "); s = s.replace(/\n /,"\n"); return s; }
-  return trim(exec(str, { silent: true }).output);
+  return trim(shelljs.exec(str, { silent: true }).stdout);
 }
 
 apps = [
@@ -209,7 +206,7 @@ function appstring() {
   var res = '';
   for (var i = 0; i < apps.length; i++) {
     var app = apps[i];
-    var path = which(app.exe);
+    var path = shelljs.which(app.exe);
     if (path && !path.startsWith('/usr/bin/')) {
       res += escp(app.name + '-' + app.version(), [ '.', '-' ], app.color) + '{{color.white}}:';
     }
