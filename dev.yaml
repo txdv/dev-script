@@ -1,7 +1,7 @@
 -
   name: mono
   color: yellow
-  version: mono --version | head -1 | awk '{ print $5 }'
+  version: mono --version | awk 'NR == 1 { print $5 }'
 -
   name: node
   color: light_green
@@ -21,7 +21,7 @@
 -
   name: gcc
   color: white
-  version: gcc --version | head -1 | awk '{ print $4 }'
+  version: gcc --version | awk 'NR == 1 { print $4 }'
 -
   name: clang
   color: light_black
@@ -39,4 +39,4 @@
   name: python
   color: green
   color256: 46
-  version: python --version 2>&1 | head -1 | awk '{ print $2 }'
+  version: python --version 2>&1 | awk 'NR == 1 { print $2 }'
