@@ -134,6 +134,11 @@ apps = [
     :exec   => :ir,
     :color  => :lightred,
     :version => lambda { return `ir --version`.split(' ')[1].strip }
+  }, {
+    :name    => :rust,
+    :exec    => :rustc,
+    :color   => :lightred,
+    :version => lambda { return `rustc --version`.split(' ')[1].strip }
   }
 ]
 
