@@ -1,0 +1,50 @@
+-
+  name: mono
+  exec: mono
+  color: yellow
+  version: mono --version | head -1 | awk '{ print $5 }'
+-
+  name: node
+  exec: node
+  color: lightgreen
+  version: node --version | awk '{ print substr($1, 2) }'
+-
+  name: ruby
+  exec: ruby
+  color: red
+  version: ruby --version | awk '{ print $2 }'
+-
+  name: git
+  exec: git
+  color: blue
+  version: git --version | awk '{ print $3 }'
+-
+  name: vala
+  exec: valac
+  color: lightpurple
+  version: valac --version | awk '{ print $2 }'
+-
+  name: gcc
+  exec: gcc
+  color: white
+  version: gcc --version | head -1 | awk '{ print $4 }'
+-
+  name: clang
+  exec: clang
+  color: lightwhite
+  version: clang --version | awk '{ print $3 }'
+-
+  name: ir
+  exec: ir
+  color: lightred
+  version: ir --version | awk '{ print $2 }'
+-
+  name: rust
+  exec: rust
+  color: lightred
+  version: rustc --version | awk '{ print $2 }'
+-
+  name: python
+  exec: python
+  color: green
+  version: python --version 2>&1 | head -1 | awk '{ print $2 }'

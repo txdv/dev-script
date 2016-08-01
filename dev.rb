@@ -1,5 +1,8 @@
 #!/usr/bin/env ruby
 
+require 'active_support/core_ext/hash/keys'
+require 'yaml'
+
 class ColorHash < Hash
   def initialize(hash)
     super @hash
@@ -67,54 +70,7 @@ h = {
 esc = ColorHash.new(h)
 color = esc.color
 
-apps = [
-  {
-    :name  => :mono,
-    :exec  => :mono,
-    :color => :yellow,
-    :version => lambda { return `mono --version`.split(' ')[4] },
-  }, {
-    :name  => :node,
-    :exec  => :node,
-    :color => :lightgreen,
-    :version => lambda { return `node --version`.strip[1..-1] }
-  }, {
-    :name    => :ruby,
-    :exec    => :ruby,
-    :color   => :red,
-    :version => lambda { return `ruby --version`.split(' ')[1] }
-  }, {
-    :name    => :git,
-    :exec    => :git,
-    :color   => :blue,
-    :version => lambda { return `git --version`.strip.split(' ')[2] }
-  }, {
-    :name    => :vala,
-    :exec    => :valac,
-    :color   => :lightpurple,
-    :version => lambda { return `valac --version`.strip.split(' ')[1] }
-  }, {
-    :name    => :gcc,
-    :exec    => :gcc,
-    :color   => :white,
-    :version => lambda { return `gcc --version`.strip.split(' ')[2] }
-  }, {
-    :name   => :clang,
-    :exec   => :clang,
-    :color  => :lightgray,
-    :version => lambda { return `clang --version`.split(' ')[2].strip }
-  }, {
-    :name   => :ir,
-    :exec   => :ir,
-    :color  => :lightred,
-    :version => lambda { return `ir --version`.split(' ')[1].strip }
-  }, {
-    :name    => :rust,
-    :exec    => :rustc,
-    :color   => :lightred,
-    :version => lambda { return `rustc --version`.split(' ')[1].strip }
-  }
-]
+apps = YAML::load_file('dev.yaml').map(&:symbolize_keys)
 
 def colorize(normal, accent, symbols, str)
   return accent + str.gsub(/[#{symbols}]/) { |arg| normal + arg + accent }
@@ -128,8 +84,8 @@ str = apps.collect do |app|
   which = `which #{app[:exec]}`
   next if which.length == 0
   next if which.start_with?("/usr/bin/")
-  version = app[:version].call
-  colorize(color.white, color[app[:color]], "\.", "#{name}-#{version}")
+  version = `#{app[:version]}`.strip
+  colorize(color.white, color[app[:color].to_sym], "\.", "#{name}-#{version}")
 end.reject { |x| x == nil }.join("#{color.white}:")
 
 res = pre + str + "#{color.white}: #{color.blue}#{esc.pwd} #{color.lightgreen}$#{color.nc} "
