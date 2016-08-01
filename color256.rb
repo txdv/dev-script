@@ -20,11 +20,24 @@ class String
   private
 
   def ansi_escape(values)
-    "\033[#{values.join(';')}m"
+    if values.is_a?(Array)
+      values = values.join(';')
+    else
+      values = values.to_s
+    end
+    "#{ansi_prefix}[#{values}#{ansi_suffix}"
   end
 
   def ansi_clear
-    "\033[0m"
+    ansi_escape(0)
+  end
+
+  def ansi_prefix
+    "\033"
+  end
+
+  def ansi_suffix
+    "m"
   end
 end
 

@@ -24,12 +24,11 @@ end
 
 # override ower own functionality
 class String
-  def ansi_escape(values)
-    "\\[\\033[#{values.join(';')}m\\]"
+  def ansi_prefix
+    "\\[\\033"
   end
-
-  def ansi_clear
-    "\\[\\033[0m\\]"
+  def ansi_suffix
+    "m\\]"
   end
 end
 
