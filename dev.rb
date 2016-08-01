@@ -92,7 +92,7 @@ apps = YAML::load_file('dev.yaml').map(&:symbolize_keys)
 
 str = apps.collect do |app|
   name = app[:name]
-  which = `which #{app[:exec]}`
+  which = `which #{app[:version].partition(' ').first}`
   next if which.length == 0
   next if which.start_with?("/usr/bin/")
   version = `#{app[:version]}`.strip
