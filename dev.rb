@@ -26,26 +26,6 @@ class ColorHash < Hash
   end
 end
 
-class Variables
-  def initialize
-    @hash = {}
-  end
-
-  def set(variable, value)
-    @hash[variable] = value
-  end
-
-  def add(variable, value)
-    @hash[variable] = "#{value}:" + @hash[variable]
-  end
-
-  def print
-    @hash.each do |key, value|
-      puts "#{key} #{value}|"
-    end
-  end
-end
-
 h = {
   :day       => '\\d',
   :host      => '\\h',
@@ -160,6 +140,7 @@ end.reject { |x| x == nil }.join("#{color.white}:")
 
 res = pre + str + "#{color.white}: #{color.blue}#{esc.pwd} #{color.lightgreen}$#{color.nc} "
 
-vars = Variables.new
-vars.set(:PS1, res)
-vars.print
+vars = { PS1: res }
+vars.each do |key, value|
+  puts "#{key} #{value}|"
+end
