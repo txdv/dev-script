@@ -1,11 +1,5 @@
 #!/usr/bin/env ruby
 
-class String
-  def starts_with?(chars)
-    self.match(/^#{chars}/) ? true : false
-  end
-end
-
 class ColorHash < Hash
   def initialize(hash)
     super @hash
@@ -133,7 +127,7 @@ str = apps.collect do |app|
   name = app[:name]
   which = `which #{app[:exec]}`
   next if which.length == 0
-  next if which.starts_with?("/usr/bin/")
+  next if which.start_with?("/usr/bin/")
   version = app[:version].call
   colorize(color.white, color[app[:color]], "\.", "#{name}-#{version}")
 end.reject { |x| x == nil }.join("#{color.white}:")
