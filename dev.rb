@@ -3,6 +3,7 @@
 require 'active_support/core_ext/hash/keys'
 require 'colorize'
 require 'yaml'
+require_relative 'color256'
 
 # override https://github.com/fazibear/colorize/blob/8af1ec5e8223a8d7c59d29f08552fb2e28ed8202/lib/colorize/instance_methods.rb#L19
 # The PS1 variable expects an escaped version.
@@ -18,6 +19,17 @@ module Colorize
         str << "\\[\\033[#{match[0]};#{match[1]};#{match[2]}m#{match[3]}\\]\\033[0m\\]"
       end
     end
+  end
+end
+
+# override ower own functionality
+class String
+  def ansi_escape(values)
+    "\\[\\033[#{values.join(';')}m\\]"
+  end
+
+  def ansi_clear
+    "\\[\\033[0m\\]"
   end
 end
 
@@ -85,6 +97,21 @@ h = {
   }
 }
 
+CONFIG = { color256: false }
+ARGV.each do |arg|
+  if arg == 'color256'
+    CONFIG[:color256] = true
+  end
+end
+
+def get_color(str, app)
+  if CONFIG[:color256] and app.key?(:color256)
+    str.color256(app[:color256])
+  else
+    str.send(app[:color])
+  end
+end
+
 esc = ColorHash.new(h)
 color = esc.color
 
@@ -96,7 +123,7 @@ str = apps.collect do |app|
   next if which.length == 0
   next if which.start_with?("/usr/bin/")
   version = `#{app[:version]}`.strip
-  "#{name}-#{version}".gsub(/[\w]+/) { |s| s.send(app[:color]) }
+  "#{name}-#{version}".gsub(/[\w]+/) { |s| get_color(s, app) }
 end.reject(&:nil?).join(':')
 
 str += ':' if str.length > 0

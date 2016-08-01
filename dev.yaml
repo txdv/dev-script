@@ -25,6 +25,7 @@
 -
   name: clang
   color: light_black
+  color256: 246
   version: clang --version | awk '{ print $3 }'
 -
   name: ir
@@ -37,4 +38,5 @@
 -
   name: python
   color: green
+  color256: 46
   version: python --version 2>&1 | head -1 | awk '{ print $2 }'
