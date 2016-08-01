@@ -11,7 +11,7 @@ class String
     end
 
     if values.length == 0
-      ""
+      self
     else
       ansi_escape(values) + self + ansi_clear
     end
